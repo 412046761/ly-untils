@@ -1,5 +1,5 @@
 #### application.yml 模板,放resources下 （'yourXXX' 需要修改成本地的)
-``
+```
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -16,4 +16,4 @@ logging:
     mp.dao: trace
   pattern:
     console: '%p%m%n'
-``
+```
