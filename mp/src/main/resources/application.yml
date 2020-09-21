@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://liyue08alibaba.mysql.rds.aliyuncs.com:3306/demo?useUnicode=true&characterEncoding=UTF-8&&useSSL=true&serverTimezone=UTC
+    username: liyue08
+    password: qwe8584951
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+
+# 日志
+logging:
+  level:
+    liyue08: warn
+    mp.dao: trace
+    # 输出sql
+  pattern:
+    console: '%p%m%n'

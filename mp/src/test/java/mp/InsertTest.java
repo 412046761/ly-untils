@@ -24,7 +24,7 @@ public class InsertTest {
     @Test
     public void insert(){
         User u = new User();
-        u.setRealName("向中");
+        u.setName("向中");
         u.setAge("13");
         u.setEmail("xq@baomidou.com");
         u.setRemark("备注信息阿斯顿");
