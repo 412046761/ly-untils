@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
  * @Date: 2020-06-16 19:22
  * @Version: 1.0
  **/
-public class IpUtils {
+public class RequestIpUtils {
 
     private static final String UNKNOWN = "unknown";
     private static final String LOCALHOST = "127.0.0.1";
