@@ -1,7 +1,7 @@
 import java.lang.reflect.Field;
 
 /**
- * @Despriction 反射工具
+ * @Despriction 对象属性反射工具
  * @Author liyue
  * @Date 2020/5/13
  * @Since 1.0.0
