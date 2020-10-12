@@ -49,4 +49,28 @@ public class StringUtils {
         return !StringUtils.isBlank(str);
     }
 
+    /**
+     * 逗号分隔转引号逗号分隔
+     * 123----> '123'
+     * 1,2,3----> '1', '2', '3'
+     * 1, 2, 3----> '1', ' 2', ' 3'
+     * null---->null
+     * "  "---->"  "
+     * @param str
+     * @return
+     */
+    public static String reSqlFormat(String str) {
+        if (StringUtils.isBlank( str)){ return str; }
+        String[] arrParam;
+        if (str.contains(",") || str.contains("，") ) {
+            arrParam = str.replace("，",",").split(",");
+        } else {
+            arrParam = new String[]{(str)};
+        }
+        String rs = "";
+        for (String strParam : arrParam) {
+            rs += (" '" + strParam + "',");
+        }
+        return rs.substring(0, rs.length() - 1);
+    }
 }
