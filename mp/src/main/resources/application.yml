@@ -1,7 +1,10 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://liyue08alibaba.mysql.rds.aliyuncs.com:3306/demo?useUnicode=true&characterEncoding=UTF-8&&useSSL=true&serverTimezone=UTC
+    # p6spy SQL性能分析
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    # driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:p6spy:mysql://liyue08alibaba.mysql.rds.aliyuncs.com:3306/demo?useUnicode=true&characterEncoding=UTF-8&&useSSL=true&serverTimezone=UTC
+    # url: jdbc:mysql://liyue08alibaba.mysql.rds.aliyuncs.com:3306/demo?useUnicode=true&characterEncoding=UTF-8&&useSSL=true&serverTimezone=UTC
     username: liyue08
     password: qwe8584951
     initialSize: 5
@@ -16,3 +19,10 @@ logging:
     # 输出sql
   pattern:
     console: '%p%m%n'
+
+# 全局配置：逻辑删除
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-not-delete-value: 0
+      logic-delete-value: 1

@@ -47,3 +47,65 @@ VALUES (1087982257332887553, '大boss', 40, 'boss@baomidou.com', NULL
 	(1094592041087729666, '刘红雨', 32, 'lhm@baomidou.com', 1088248166370832385
 		, '2019-01-14 09:48:16');
 ```
+
+
+---------------------
+
+#### 实体类与数据库兼容配置
+--------------------------------
+##### 1 实体类计算属性，不序列化，不读写库的字段配置方法
+方法|说明
+---|---
+transient|private transient String remark;
+static|private static String remark;
+@TableField|@TableField(exist = false)
+ -|private  String remark;
+##### 2 实体类的主键策略
+```aidl
+
+// 1.局部策略，类主键上配置
+@TableId(type = IdType.AUTO)
+
+// 2.全局策略，配置文件全局配置
+mybatis-plus:
+  mapper-locations:
+    global-config:
+      db-config:
+        id-type: uuid
+
+```
+策略|说明
+---|---
+AUTO(0)| 自增
+NONE(1)| 跟随全局
+INPUT(2)| 手动传入
+ID_WORKER(3)| 默认雪花 （数字类型）
+UUID(4)| UUID生成 String类型
+ID_WORKER_STR(5)| 雪花String类型
+
+##### 2.1 实体类的主键不为Id,需要如下配置
+```$xslt
+  // 主键
+  @TableId
+  private Long userId;
+```
+
+##### 2.2 实体类字段与数据库不一致，需要如下配置
+```$xslt
+  // 姓名
+  @TableField("name")
+  private String realName;
+```
+
+##### 2.3 实体类名与数据库表名不一致，需要如下配置
+```$xslt
+  @TableName("mp_user")
+  @Data
+  public class User {
+```
+mapper类不需要加注解托管给spring容器吗?
+```aidl
+需要，下面任选一种解决：
+1.全局配置： 在启动类上加@MapperScan
+2.局部配置：Mapper类上加@Mapper注解
+```
