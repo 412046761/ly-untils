@@ -10,4 +10,8 @@ import org.apache.ibatis.annotations.Mapper;
  * @date: 2020/10/13 10:25
  */
 public interface UserARMapper  extends BaseMapper<UserAR> {
+
+
+
+
 }
