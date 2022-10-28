@@ -1,4 +1,4 @@
-#### application.yml 模板,放resources下 （'yourXXX' 需要修改成本地的)
+#### application.yml 模板,放resources下 
 ```
 spring:
   datasource:
