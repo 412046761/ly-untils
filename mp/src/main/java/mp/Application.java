@@ -10,9 +10,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date: 2020/9/17 16:44
  */
 @SpringBootApplication
-@MapperScan("mp.dao")
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class,args);
     }
+
 }

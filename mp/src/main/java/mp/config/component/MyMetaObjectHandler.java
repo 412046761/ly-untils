@@ -1,4 +1,4 @@
-package mp.component;
+package mp.config.component;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
@@ -15,19 +15,12 @@ import java.time.LocalDateTime;
 public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
-        boolean hasSetter = metaObject.hasSetter("createTime");
-        if(hasSetter){
-            System.out.println("setInsertFieldValByName~!");
-            setInsertFieldValByName("createTime", LocalDateTime.now(), metaObject);
-        }
+        this.fillStrategy(metaObject, "createTime", LocalDateTime.now());
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        Object val = getFieldValByName("updateTime",metaObject);
-        if(val == null ){
-            System.out.println("setUpdateFieldValByName~!");
-            setUpdateFieldValByName("updateTime", LocalDateTime.now(), metaObject);
-        }
+        this.fillStrategy(metaObject, "updateTime", LocalDateTime.now()); // 也可以使用(3.3.0 该方法有bug)
     }
+
 }
