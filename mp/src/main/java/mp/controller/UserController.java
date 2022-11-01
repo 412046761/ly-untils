@@ -6,9 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import mp.entity.User;
 import mp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,5 +35,19 @@ public class UserController {
     @RequestMapping(value = "/getUserList", method = RequestMethod.GET)
     public List<User> getUserList(){
         return userService.list();
+    }
+
+    /**
+     * 人员新增
+     *
+     * @Param: [user]
+     * @Return: mp.entity.User
+     * @Author: liyue
+     * @Date: 2022/11/1 17:15
+     */
+    @ApiOperation("人员新增")
+    @PostMapping(value = "/userAdd")
+    public User userAdd(@RequestBody User user){
+        return userAdd(user);
     }
 }
