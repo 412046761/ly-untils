@@ -22,7 +22,7 @@ import java.util.List;
 @RequestMapping("web/user")
 public class UserController {
     @Autowired
-    UserService userService;
+    private UserService userService;
     /**
      * 人员列表
      *

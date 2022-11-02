@@ -12,9 +12,10 @@ import java.time.LocalDateTime;
  * @date: 2020/9/17 17:09
  */
 @Data
+@TableName(value ="user")
 public class User {
     // 主键策略
-    // @TableId(type = IdType.AUTO)
+    @TableId(type = IdType.AUTO)
     private Long Id;
 
     // 姓名
@@ -28,6 +29,9 @@ public class User {
 
     // 上级Id
     private Long managerId;
+
+    // 部门id
+    private Long departmentId;
 
     // 创建时间
     @TableField(fill = FieldFill.INSERT)

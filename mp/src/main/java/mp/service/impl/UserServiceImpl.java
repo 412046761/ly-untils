@@ -1,8 +1,8 @@
-package mp.serviceImpl;
+package mp.service.impl;
 
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import mp.dao.UserMapper;
+import mp.mapper.UserMapper;
 import mp.entity.User;
 import mp.service.UserService;
 import org.springframework.stereotype.Service;
