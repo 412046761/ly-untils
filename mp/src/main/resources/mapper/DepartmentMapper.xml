@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mp.mapper.DepartmentMapper">
+
+    <resultMap id="BaseResultMap" type="mp.entity.Department">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="code" column="code" jdbcType="VARCHAR"/>
+            <result property="orgId" column="org_id" jdbcType="BIGINT"/>
+        <collection property="users" column="id" select="findUserByDepartmentId" />
+    </resultMap>
+    <select id="findUserByDepartmentId" resultType="mp.entity.User">
+        select * from user where Department_Id = #{id};
+    </select>
+
+</mapper>
