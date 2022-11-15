@@ -7,6 +7,7 @@ import mp.entity.User;
 import mp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import mp.until.RedisQueueUtil;
 
 import java.util.List;
 
@@ -23,6 +24,8 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+//    @Autowired
+//    private RedisQueueUtil redisQueue;
     /**
      * 人员列表
      *

@@ -2,6 +2,7 @@ package mp.config.component;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
  * @date: 2020/10/15 10:33
  */
 @Component
+@MapperScan("mp.mapper")
 public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
