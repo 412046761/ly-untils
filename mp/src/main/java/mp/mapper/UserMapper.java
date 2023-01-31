@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @description: UserMapper
@@ -19,4 +20,5 @@ import java.util.List;
 public interface UserMapper extends BaseMapper<User> {
     @Select("select * from user ${ew.customSqlSegment}")
     List<User> selectSql(@Param(Constants.WRAPPER) Wrapper<User> wapper);
+
 }
