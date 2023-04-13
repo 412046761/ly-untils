@@ -1,7 +1,5 @@
 package mp;
 
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.sun.javafx.fxml.BeanAdapter;
 import mp.entity.User;
 import mp.mapper.UserMapper;
 import mp.service.UserService;
