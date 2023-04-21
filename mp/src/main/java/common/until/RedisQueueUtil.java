@@ -1,4 +1,4 @@
-package mp.until;
+package common.until;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import lombok.extern.slf4j.Slf4j;

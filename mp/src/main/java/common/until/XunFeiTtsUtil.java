@@ -1,6 +1,5 @@
-package mp.until;
+package common.until;
 
-import com.beust.jcommander.internal.Lists;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import okio.ByteString;
@@ -49,7 +48,7 @@ public class XunFeiTtsUtil {
         //将url中的 schema http://和https://分别替换为ws:// 和 wss://
         String url = authUrl.toString().replace("http://", "ws://").replace("https://", "wss://");
         Request request = new Request.Builder().url(url).build();
-        List<byte[]> list = Lists.newArrayList();
+        List<byte[]> list = new ArrayList<>();
         WebSocket webSocket = client.newWebSocket(request, new WebSocketListener() {
             @Override
             public void onOpen(WebSocket webSocket, Response response) {

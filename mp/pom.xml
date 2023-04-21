@@ -44,6 +44,7 @@
                     <include>**/*.xml</include>
                     <include>**/*.json</include>
                     <include>**/*.ftl</include>
+                    <include>**/*.png</include>
                 </includes>
             </resource>
         </resources>
@@ -150,17 +151,17 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <!-- 文本转语音 只支持 Windows系统-->
-        <dependency>
-            <groupId>com.hynnet</groupId>
-            <artifactId>jacob</artifactId>
-            <version>1.18</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.hynnet</groupId>-->
+<!--            <artifactId>jacob</artifactId>-->
+<!--            <version>1.18</version>-->
+<!--        </dependency>-->
         <!--  讯飞 文本转语音 只在线-->
-        <dependency>
-            <groupId>com.beust</groupId>
-            <artifactId>jcommander</artifactId>
-            <version>1.72</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.beust</groupId>-->
+<!--            <artifactId>jcommander</artifactId>-->
+<!--            <version>1.72</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
@@ -186,6 +187,12 @@
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.15</version>
+        </dependency>
+        <!-- 图文识别  -->
+        <dependency>
+            <groupId>net.sourceforge.tess4j</groupId>
+            <artifactId>tess4j</artifactId>
+            <version>4.5.4</version>
         </dependency>
     </dependencies>
 

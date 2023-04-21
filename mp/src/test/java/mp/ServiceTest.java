@@ -1,9 +1,13 @@
 package mp;
 
+import common.until.WebImage;
 import mp.entity.User;
 import mp.mapper.UserMapper;
 import mp.service.UserService;
-import mp.until.RedisQueueUtil;
+import common.until.RedisQueueUtil;
+import net.sourceforge.tess4j.ITesseract;
+import net.sourceforge.tess4j.Tesseract;
+import net.sourceforge.tess4j.TesseractException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +15,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
+
+import static common.until.ImageColorUtil.converColor;
 
 /**
  * @description: ServiceTest
@@ -29,26 +37,34 @@ public class ServiceTest {
     private UserMapper userMapper;
     @Resource
     private RedisQueueUtil redisQueue;
-
+    String filePath = "./mp/src/main/resources/picture/mh.png";
     @Test
     public void test(){
-        Date date = new Date();
-
-        String day= "2022-01-13";
+//        WebImage.webImage();
         try{
-            date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(day+" 00:00:00");;
-        }catch (Exception e){
-
+            converColor(filePath);
+        }catch (IOException e){
+            System.out.println(e);
         }
-
-        System.out.println(date);
-
      }
     public static void main(String[] args) {
         new ServiceTest().test();
     }
 
-
+    public  void tesseract(String filePath) throws TesseractException {
+        final ITesseract instance = new Tesseract();
+        // 语言库位置
+        instance.setDatapath("D:\\tessdata");
+        // 中英文库
+//        instance.setLanguage("eng+chi_sim");
+        // 简体中文库
+        instance.setLanguage("chi_sim");
+        // 待识别的图片路径
+        File imageLocation = new File(filePath);
+        for (File image : imageLocation.listFiles()) {
+            System.out.println(image.getName() + "---" + instance.doOCR(image));
+        }
+    }
 
 
     public int myAtoi(String s) {
