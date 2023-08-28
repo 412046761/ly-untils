@@ -7,9 +7,6 @@ package com.example.offlinetts.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.example.offlinetts.Utils.XunFeiTtsUtil;
-import com.jacob.activeX.ActiveXComponent;
-import com.jacob.com.Dispatch;
-import com.jacob.com.Variant;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -70,36 +67,6 @@ public class TtsController {
     public void xunfeiSaveWav(String text, String path, String filename) throws Exception {
         XunFeiTtsUtil.textToAudio(text, path, filename);
         // XunFeiTtsUtil.convertTextOffLine(text);
-    }
-
-    public void saveWav(String text) {
-        if (!StrUtil.isBlank(text)) {
-            text = text.replaceAll("\\&[a-zA-Z]{1,10};", "").replaceAll("<[^>]*>", "").replaceAll("[(/>)<]", "").trim();
-
-            try {
-                ActiveXComponent ax = null;
-                ax = new ActiveXComponent("Sapi.SpVoice");
-                Dispatch spVoice = ax.getObject();
-                ax = new ActiveXComponent("Sapi.SpFileStream");
-                Dispatch spFileStream = ax.getObject();
-                ax = new ActiveXComponent("Sapi.SpAudioFormat");
-                Dispatch spAudioFormat = ax.getObject();
-                Dispatch.put(spAudioFormat, "Type", new Variant(22));
-                Dispatch.putRef(spFileStream, "Format", spAudioFormat);
-                Dispatch.call(spFileStream, "Open", new Object[]{new Variant(this.PATH), new Variant(3), new Variant(true)});
-                Dispatch.putRef(spVoice, "AudioOutputStream", spFileStream);
-                Dispatch.put(spVoice, "Volume", new Variant(100));
-                Dispatch.put(spVoice, "Rate", new Variant(-2));
-                Dispatch.call(spVoice, "Speak", new Object[]{new Variant(text)});
-                Dispatch.call(spFileStream, "Close");
-                Dispatch.putRef(spVoice, "AudioOutputStream", (Object) null);
-                spVoice.safeRelease();
-                ax.safeRelease();
-            } catch (Exception var6) {
-                log.info("【文字转语音接口调用异常】:" + var6);
-            }
-
-        }
     }
 
     public byte[] readWav() {

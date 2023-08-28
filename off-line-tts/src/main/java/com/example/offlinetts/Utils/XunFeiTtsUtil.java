@@ -17,7 +17,7 @@ import java.nio.channels.FileChannel;
  */
 @Component
 public class  XunFeiTtsUtil {
-    private static String appid = "ce0e1edb";
+    private static String appid = "bad00a1d";
     private static String base64 = "";
 
     private static volatile boolean lock = true;
@@ -36,7 +36,8 @@ public class  XunFeiTtsUtil {
 
         //登录参数,appid与msc库绑定,请勿随意改动
         String loginParams = "appid = " + appid + ", work_dir = " + path;
-        String session_begin_params = "engine_type = local, voice_name = xiaoyan, text_encoding = UTF-8, tts_res_path = fo|" + ttsPath + "xiaoyan.jet;fo|" + ttsPath + "common.jet, sample_rate = 16000, speed = 50, volume = 100, pitch = 50, rdn = 2";
+        // 普通版设置为local，高品质版设置为 purextts
+        String session_begin_params = "engine_type = purextts, voice_name = xiaoyan, text_encoding = UTF-8, tts_res_path = fo|" + ttsPath + "xiaoyan.jet;fo|" + ttsPath + "common.jet, sample_rate = 16000, speed = 50, volume = 100, pitch = 50, rdn = 2";
         String sessionId = null;
         RandomAccessFile raf = null;
         try {
@@ -121,7 +122,7 @@ public class  XunFeiTtsUtil {
         lock = true;
         //登录参数,appid与msc库绑定,请勿随意改动
         String loginParams = "appid = " + appid + ", work_dir = .";
-        String session_begin_params = "engine_type = local, voice_name = xiaoyan, text_encoding = UTF-8, tts_res_path = fo|" + ttsPath + "xiaoyan.jet;fo|" + ttsPath + "common.jet, sample_rate = 16000, speed = 50, volume = 100, pitch = 50, rdn = 2";
+        String session_begin_params = "engine_type = purextts, voice_name = xiaoyan, text_encoding = UTF-8, tts_res_path = fo|" + ttsPath + "xiaoyan.jet;fo|" + ttsPath + "common.jet, sample_rate = 16000, speed = 50, volume = 100, pitch = 50, rdn = 2";
         String sessionId = null;
         RandomAccessFile raf = null;
         byte[] audioByte = new byte[0];
