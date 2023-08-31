@@ -91,7 +91,6 @@ public class  XunFeiTtsUtil {
                 //获取转换数据失败
                 return null;
             }
-            // list.add(0, getWavHeader(dataSize, 16000, 32000, 1, 16));
             //定位到文件起始位置
             raf.seek(0);
             //写入真实头格式
