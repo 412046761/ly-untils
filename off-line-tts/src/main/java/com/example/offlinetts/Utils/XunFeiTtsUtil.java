@@ -22,94 +22,8 @@ public class  XunFeiTtsUtil {
 
     private static volatile boolean lock = true;
     // resources\static\tts 内容需要放到 System.out.println(System.getProperty("java.library.path")) 路径下;
-//     public static String ttsPath = "D:\\Program Files\\JDK\\jdk1.8.0_112\\bin\\";
-    public static String ttsPath = "/usr/lib64/";
-    /**
-     * 功能描述
-     * 
-     * @Param: [text 文本, path 路径, filename 语音名称]
-     * @Return: void
-     * @Author: liyue
-     * @Date: 2023/5/11 13:12
-     */
-    public static void textToAudio(String text, String path, String filename) {
-
-        //登录参数,appid与msc库绑定,请勿随意改动
-        String loginParams = "appid = " + appid + ", work_dir = " + path;
-        // 普通版设置为local，高品质版设置为 purextts
-        String session_begin_params = "engine_type = purextts, voice_name = xiaoyan, text_encoding = UTF-8, tts_res_path = fo|" + ttsPath + "xiaoyan.jet;fo|" + ttsPath + "common.jet, sample_rate = 16000, speed = 50, volume = 100, pitch = 50, rdn = 2";
-        String sessionId = null;
-        RandomAccessFile raf = null;
-        try {
-            //登录
-            int loginCode = MscLibrary.INSTANCE.MSPLogin(null, null, loginParams);
-
-            if (loginCode != 0) {
-                //登录失败
-                return;
-            }
-
-            //初始session
-            IntByReference errCode = new IntByReference();
-            sessionId = MscLibrary.INSTANCE.QTTSSessionBegin(session_begin_params, errCode);
-
-            if (errCode.getValue() != 0) {
-                //会话失败
-                return;
-            }
-
-            //放入文本
-            int textPutCode = MscLibrary.INSTANCE.QTTSTextPut(sessionId, text, text.getBytes().length, null);
-
-            if (textPutCode != 0) {
-                //放入文本失败
-                return;
-            }
-
-            //写入空的头格式
-            raf = new RandomAccessFile(filename, "rw");
-            raf.write(new byte[44]);
-            int dataSize = 0;
-            IntByReference audioLen = new IntByReference();
-            IntByReference synthStatus = new IntByReference();
-            while (true) {
-                Pointer pointer = MscLibrary.INSTANCE.QTTSAudioGet(sessionId, audioLen, synthStatus, errCode);
-                if (pointer != null && audioLen.getValue() > 0) {
-                    // 写入合成内容
-                    raf.write(pointer.getByteArray(0, audioLen.getValue()));
-                    // 记录数据长度
-                    dataSize += audioLen.getValue();
-                }
-                //转换异常或转换结束跳出循环
-                if (errCode.getValue() != 0 || synthStatus.getValue() == 2) {
-                    break;
-                }
-            }
-            if (textPutCode != 0) {
-                //获取转换数据失败
-                return;
-            }
-            //定位到文件起始位置
-            raf.seek(0);
-            //写入真实头格式
-            raf.write(getWavHeader(dataSize, 16000, 32000, 1, 16));
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (sessionId != null) {
-                MscLibrary.INSTANCE.QTTSSessionEnd(sessionId, "Normal");
-            }
-            MscLibrary.INSTANCE.MSPLogout();
-            if (raf != null) {
-                try {
-                    raf.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-    }
+     public static String ttsPath = "D:\\Program Files\\JDK\\jdk1.8.0_112\\bin\\";
+//    public static String ttsPath = "/usr/lib64/";
 
     /**
      * 离线文本转换为语音
@@ -119,10 +33,9 @@ public class  XunFeiTtsUtil {
      * @throws IOException 异常
      */
     public static byte[] convertTextOffLine(String text) throws Exception {
-        lock = true;
         //登录参数,appid与msc库绑定,请勿随意改动
         String loginParams = "appid = " + appid + ", work_dir = .";
-        String session_begin_params = "engine_type = purextts, voice_name = xiaoyan, text_encoding = UTF-8, tts_res_path = fo|" + ttsPath + "xiaoyan.jet;fo|" + ttsPath + "common.jet, sample_rate = 16000, speed = 50, volume = 100, pitch = 50, rdn = 2";
+        String session_begin_params = "engine_type = local, voice_name = xiaoyan, text_encoding = UTF-8, tts_res_path = fo|" + ttsPath + "xiaoyan.jet;fo|" + ttsPath + "common.jet, sample_rate = 16000, speed = 50, volume = 100, pitch = 50, rdn = 2";
         String sessionId = null;
         RandomAccessFile raf = null;
         byte[] audioByte = new byte[0];
@@ -189,7 +102,6 @@ public class  XunFeiTtsUtil {
             String msg = "请确认 'resources//static//tts’ 内容已放到 " + System.getProperty("java.library.path") + "之一路径下" ;
             System.out.println(msg);
         } finally {
-            lock = false;
             if (sessionId != null) {
                 MscLibrary.INSTANCE.QTTSSessionEnd(sessionId, "Normal");
             }
@@ -201,8 +113,6 @@ public class  XunFeiTtsUtil {
                     e.printStackTrace();
                 }
             }
-        }
-        while (lock) {
         }
         return audioByte;
     }
@@ -246,9 +156,9 @@ public class  XunFeiTtsUtil {
      */
     public interface MscLibrary extends Library {
 
-        MscLibrary INSTANCE = Native.load(ttsPath + "libmsc.so", MscLibrary.class);
+//        MscLibrary INSTANCE = Native.load(ttsPath + "libmsc.so", MscLibrary.class);
 
-//        MscLibrary INSTANCE = Native.load(ttsPath + "msc_x64.dll", MscLibrary.class);
+        MscLibrary INSTANCE = Native.load(ttsPath + "msc_x64.dll", MscLibrary.class);
 
         int MSPLogin(String username, String password, String param);
 

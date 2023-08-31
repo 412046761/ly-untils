@@ -5,7 +5,6 @@
 
 package com.example.offlinetts.controller;
 
-import cn.hutool.core.util.StrUtil;
 import com.example.offlinetts.Utils.XunFeiTtsUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,8 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.util.concurrent.Callable;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 @Api(
         tags = {"文字转语音"}
@@ -64,38 +64,35 @@ public class TtsController {
     }
 
 
-    public void xunfeiSaveWav(String text, String path, String filename) throws Exception {
-        XunFeiTtsUtil.textToAudio(text, path, filename);
-        // XunFeiTtsUtil.convertTextOffLine(text);
-    }
 
-    public byte[] readWav() {
-        byte[] byt = null;
-
-        try {
-            File f = new File(this.PATH);
-            if (!f.exists()) {
-                log.info(this.PATH + " 文件不存在!");
-                return null;
-            }
-
-            InputStream s = new FileInputStream(f);
-            byt = new byte[s.available()];
-            s.read(byt);
-            s.close();
-        } catch (IOException var4) {
-            var4.printStackTrace();
-        }
-
-        return byt;
-    }
-
-    class CallableImpl implements Callable {
-        CallableImpl() {
-        }
-
-        public byte[] call() {
-            return TtsController.this.readWav();
-        }
-    }
+//
+//    public byte[] readWav() {
+//        byte[] byt = null;
+//
+//        try {
+//            File f = new File(this.PATH);
+//            if (!f.exists()) {
+//                log.info(this.PATH + " 文件不存在!");
+//                return null;
+//            }
+//
+//            InputStream s = new FileInputStream(f);
+//            byt = new byte[s.available()];
+//            s.read(byt);
+//            s.close();
+//        } catch (IOException var4) {
+//            var4.printStackTrace();
+//        }
+//
+//        return byt;
+//    }
+//
+//    class CallableImpl implements Callable {
+//        CallableImpl() {
+//        }
+//
+//        public byte[] call() {
+//            return TtsController.this.readWav();
+//        }
+//    }
 }
