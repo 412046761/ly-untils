@@ -27,10 +27,6 @@ import java.io.OutputStream;
 @RequestMapping({"web/tts"})
 public class TtsController {
     private static final Logger log = LoggerFactory.getLogger(TtsController.class);
-    public String PATH = "Z:\\test.wav";
-
-    public TtsController() {
-    }
 
     @ApiOperation("文字转语音")
     @PostMapping({"text_to_audio"})
@@ -39,7 +35,7 @@ public class TtsController {
         byte[] audioByte = null;
         //过滤图片,h5标签
         text = text.replaceAll("\\&[a-zA-Z]{1,10};", "").replaceAll("<[^>]*>", "").replaceAll("[(/>)<]", "").trim();
-        //调用后台服务接口获取音频base64
+        //获取音频
         audioByte = XunFeiTtsUtil.convertTextOffLine(text);
 
         //以@RestController
@@ -55,37 +51,4 @@ public class TtsController {
             os.close();
         }
     }
-
-
-
-//
-//    public byte[] readWav() {
-//        byte[] byt = null;
-//
-//        try {
-//            File f = new File(this.PATH);
-//            if (!f.exists()) {
-//                log.info(this.PATH + " 文件不存在!");
-//                return null;
-//            }
-//
-//            InputStream s = new FileInputStream(f);
-//            byt = new byte[s.available()];
-//            s.read(byt);
-//            s.close();
-//        } catch (IOException var4) {
-//            var4.printStackTrace();
-//        }
-//
-//        return byt;
-//    }
-//
-//    class CallableImpl implements Callable {
-//        CallableImpl() {
-//        }
-//
-//        public byte[] call() {
-//            return TtsController.this.readWav();
-//        }
-//    }
 }

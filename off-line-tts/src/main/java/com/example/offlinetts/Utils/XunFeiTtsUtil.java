@@ -21,8 +21,8 @@ public class  XunFeiTtsUtil {
 
     private static volatile boolean lock = true;
     // resources\static\tts 内容需要放到 System.out.println(System.getProperty("java.library.path")) 路径下;
-     public static String ttsPath = "D:\\Program Files\\JDK\\jdk1.8.0_112\\bin\\";
-//    public static String ttsPath = "/usr/lib64/";
+//     public static String ttsPath = "D:\\Program Files\\JDK\\jdk1.8.0_112\\bin\\";
+    public static String ttsPath = "/usr/lib64/";
 
     /**
      * 离线文本转换为语音
@@ -119,9 +119,9 @@ public class  XunFeiTtsUtil {
      */
     public interface MscLibrary extends Library {
 
-//        MscLibrary INSTANCE = Native.load(ttsPath + "libmsc.so", MscLibrary.class);
+        MscLibrary INSTANCE = Native.load(ttsPath + "libmsc.so", MscLibrary.class);
 
-        MscLibrary INSTANCE = Native.load(ttsPath + "msc_x64.dll", MscLibrary.class);
+//        MscLibrary INSTANCE = Native.load(ttsPath + "msc_x64.dll", MscLibrary.class);
 
         int MSPLogin(String username, String password, String param);
 
