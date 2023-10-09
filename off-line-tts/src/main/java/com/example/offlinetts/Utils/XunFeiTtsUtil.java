@@ -5,12 +5,11 @@ import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
+import lombok.Synchronized;
+import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
 
 /**
  * 科大讯飞
@@ -32,12 +31,14 @@ public class  XunFeiTtsUtil {
      * @return 转换后的byte[]
      * @throws IOException 异常
      */
+    @Synchronized
     public static byte[] convertTextOffLine(String text) throws Exception {
         //登录参数,appid与msc库绑定,请勿随意改动
         String loginParams = "appid = " + appid + ", work_dir = .";
         String session_begin_params = "engine_type = local, voice_name = xiaoyan, text_encoding = UTF-8, tts_res_path = fo|" + ttsPath + "xiaoyan.jet;fo|" + ttsPath + "common.jet, sample_rate = 16000, speed = 50, volume = 100, pitch = 50, rdn = 2";
         String sessionId = null;
-        RandomAccessFile raf = null;
+        ByteArrayOutputStream raf = new ByteArrayOutputStream();
+        ByteArrayOutputStream dateStream = new ByteArrayOutputStream();
         byte[] audioByte = new byte[0];
         try {
             //登录
@@ -66,19 +67,16 @@ public class  XunFeiTtsUtil {
             }
 
             //写入空的头格式
-            raf = new RandomAccessFile("tts_sample.wav", "rw");
-            raf.write(new byte[44]);
+            dateStream.write(new byte[44]);
 
-            //  List<byte[]> list = Lists.newArrayList();
             int dataSize = 0;
             IntByReference audioLen = new IntByReference();
             IntByReference synthStatus = new IntByReference();
             while (true) {
                 Pointer pointer = MscLibrary.INSTANCE.QTTSAudioGet(sessionId, audioLen, synthStatus, errCode);
                 if (pointer != null && audioLen.getValue() > 0) {
-                    //        list.add(pointer.getByteArray(0, audioLen.getValue()));
                     // 写入合成内容
-                    raf.write(pointer.getByteArray(0, audioLen.getValue()));
+                    dateStream.write(pointer.getByteArray(0, audioLen.getValue()));
                     // 记录数据长度
                     dataSize += audioLen.getValue();
                 }
@@ -92,10 +90,10 @@ public class  XunFeiTtsUtil {
                 return null;
             }
             //定位到文件起始位置
-            raf.seek(0);
             //写入真实头格式
-            raf.write(getWavHeader(dataSize, 16000, 32000, 1, 16));
-            audioByte = toByteArrayMapped("tts_sample.wav");
+            raf.write(getWavHeader(dataSize, 16000, 32000, 1, 16),0 ,44);
+            raf.write(dateStream.toByteArray());
+            audioByte = raf.toByteArray();
         } catch (Exception e) {
             e.printStackTrace();
             String msg = "请确认 'resources//static//tts’ 内容已放到 " + System.getProperty("java.library.path") + "之一路径下" ;
@@ -116,40 +114,6 @@ public class  XunFeiTtsUtil {
         return audioByte;
     }
 
-
-    /**
-     *
-     * <p>Title: toByteArrayMapped</p>
-     * <p>Description: 读取大文件</p>
-     * @param filename
-     * @return
-     * @throws IOException
-     */
-    public static byte[] toByteArrayMapped(String filename) throws IOException {
-
-        FileChannel fc = null;
-        RandomAccessFile rf=new RandomAccessFile(filename, "r");
-        try {
-            fc = rf.getChannel();
-            MappedByteBuffer mappedByteBuffer = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size()).load();
-            byte[] result = new byte[(int) fc.size()];
-            if (mappedByteBuffer.remaining() > 0) {
-                mappedByteBuffer.get(result, 0, mappedByteBuffer.remaining());
-            }
-            return result;
-        }  catch (IOException e) {
-            e.printStackTrace();
-            throw e;
-        } finally {
-            try {
-                rf.close();
-                fc.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
     /**
      * jna 调第三方动态库
      */

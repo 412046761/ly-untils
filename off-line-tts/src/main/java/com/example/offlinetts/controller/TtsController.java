@@ -40,15 +40,8 @@ public class TtsController {
         //过滤图片,h5标签
         text = text.replaceAll("\\&[a-zA-Z]{1,10};", "").replaceAll("<[^>]*>", "").replaceAll("[(/>)<]", "").trim();
         //调用后台服务接口获取音频base64
-        log.info("请求文字转语音内容：{}", text);
         audioByte = XunFeiTtsUtil.convertTextOffLine(text);
-        if (audioByte != null) {
-            log.info("请求文字转语音响应成功：{}", text);
-        }
-        try {
-        } catch (Exception e) {
-            log.error("【文字转语音接口调用异常】", e);
-        }
+
         //以@RestController
         response.setContentType("application/octet-stream;charset=UTF-8");
         OutputStream os = new BufferedOutputStream(response.getOutputStream());
